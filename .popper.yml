@@ -16,6 +16,25 @@ pipelines:
     - setup
     - run
     - validate
+  data-science-no-stages:
+    envs:
+      host:
+        args: []
+    path: pipelines/data-science-no-stages
+    stages:
+    - run
+    - generate-figures
+    - validate
+  docker-data-science:
+    envs:
+      host:
+        args: []
+    path: pipelines/docker-data-science
+    stages:
+    - build-docker-image
+    - generate-learning-curves
+    - generate-figures
+    - validate
   mypipe:
     envs:
       host:

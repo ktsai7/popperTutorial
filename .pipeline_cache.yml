@@ -1,0 +1,514 @@
+popperized:
+  CMPE257_Mobile_Networks:
+    metadata: {}
+    pipelines:
+      paper:
+        envs: [host]
+        path: paper
+        readme: ''
+        stages: [build]
+      terrain:
+        envs: [host]
+        path: pipelines/terrain
+        readme: "## Sensor Network Deployment Over 2.5D Terrain\n\n### Installing\
+          \ Popper\nSee [here](https://github.com/systemslab/popper/tree/master/cli)\
+          \ for instructions on how to install the CLI tool. Once \ninstalled, to\
+          \ get an overview and list of commands check out the \ncommand line help:\n\
+          \n```bash\npopper --help\n```\n\nFor a quickstart guide on how to use the\
+          \ CLI, look [here](http://popper.readthedocs.io/en/latest/protocol/getting_started.html#quickstart-guide)\n\
+          \n### Running The Experiment\n* Make sure using popper version 0.6.0\n```bash\n\
+          git clone https://github.com/msouppe/CMPE257_Mobile_Networks.git\n\ncd pipelines/terrain\n\
+          \npopper run\n```\n"
+        stages: [setup, run, post-run, validate, teardown]
+    version: 1
+  open-comp-rsc-popper:
+    metadata: {}
+    pipelines:
+      comp-rsc:
+        envs: [host]
+        path: popper_pipeline
+        readme: ''
+        stages: [download-smt-db, generate, analyze, plot]
+    version: 1
+  popper-badge-server:
+    metadata: {access_right: open, license: CC-BY-4.0, publication_type: article,
+      upload_type: publication}
+    pipelines:
+      test-badge-server:
+        envs: [host]
+        path: pipelines/test-badge-server
+        readme: ''
+        stages: [install-server, run-tests, clean-up]
+    popperized: [github/popperized]
+    version: 1
+  popper-readthedocs-examples:
+    metadata: {}
+    pipelines:
+      blis:
+        envs: [host]
+        path: pipelines/blis
+        readme: "# BLIS vs. other BLAS implementations\n\n[BLIS](https://github.com/flame/blis)\
+          \ is a portable software framework \nfor instantiating high-performance\
+          \ BLAS-like dense linear algebra \nlibraries. This experiment corresponds\
+          \ to the one presented in the \n[first BLIS paper](http://doi.acm.org/10.1145/2764454).\
+          \ A [subsequent \nreport](http://dl.acm.org/citation.cfm?id=2738033) documents\
+          \ how to \nrepeat this experiment. This pipeline corresponds to sections\
+          \ \n2.1-2.3 of the replicability report and consists of three stages:\n\n\
+          \  * `build-docker-image`. [A Docker \n    image](https://github.com/ivotron/docker-blis/tree/master/Dockerfile)\
+          \ \n    prepares all the binaries for BLIS, OpenBLAS and Atlas \n    precompiled.\n\
+          \  * `run`. Executes the experiment that compares BLIS against other \n\
+          \    BLAS implementations, generating output to the `results/` folder.\n\
+          \  * `analyze`. Runs the analysis on the output of the experiment, \n  \
+          \  corresponding to figures 13-15 from the original paper. To \n    visualize\
+          \ results locally, one can execute the following:\n\n    ```bash\n    docker\
+          \ run -d \\\n      -v `pwd`:/code/experiment -p 8888:8888  jupter notebook\
+          \ \n      --NotebookApp.token=\"\"\n    ```\n\n    After the above executes,\
+          \ open Browser and point it to \n    <http://localhost:8888>. To see an\
+          \ example of how the notebook looks \n    click \n    [here](https://github.com/popperized/popper-readthedocs-examples/blob/master/pipelines/blis/results/visualize.ipynb).\n"
+        stages: [build-docker-image, run, analyze, validate]
+      chameleon-benchmarking:
+        envs: [host]
+        path: pipelines/chameleon-benchmarking
+        readme: "# Chameleon ready pipeline\n\nThe [![ Chameleon ready pipeline](https://img.shields.io/badge/Chameleon-ready-blue.svg)](https://github.com/popperized/popper-readthedocs-examples/tree/master/pipelines/chameleon-benchmarking)\n\
+          \ badge is included in a repository hosting a [Popper pipeline](https://github.com/systemslab/popper)\
+          \ that is ready to \n be executed on [ChameleonCloud](https://www.chameleoncloud.org).\
+          \ If you see it in a repository, it means that the authors have made it\
+          \ easier for others to run on Chameleon by following the Popper convention.\n\
+          \ \n In this repository, we present an example of a pipeline that can be\
+          \ used \n as the starting point to implement a [![ Chameleon ready pipeline](https://img.shields.io/badge/Chameleon-ready-blue.svg)](https://github.com/popperized/popper-readthedocs-examples/tree/master/pipelines/chameleon-benchmarking)\
+          \ pipeline. To add it to your repository using `popper`, you can do:\n\n\
+          ```bash\npopper add popperized/popper-readthedocs-examples/chameleon-benchmarking\n\
+          ```\n\nIf you add this pipeline to your repo (or if you follow the Popper\
+          \ convention to implement experiments on Chameleon), we invite you to add\
+          \ the badge to your `README` file.\n\n--------------\n\n[Chameleon](https://www.chameleoncloud.org/)\
+          \ is an NSF funded cloud service\nthat aims to give researchers access to\
+          \ large scale infrastructure for cloud\nresearch. Provisioning and running\
+          \ cloud experiments of any size with Chameleon\nis fast and simple. We can\
+          \ follow the Popper convention when implementing experimentation pipelins\
+          \ on Chameleon in\norder to make their reproducibility much more effortless.\
+          \ This pipeline\nprovides an example and template for an experiment that\
+          \ automatically runs on\nChameleon.\n\nYou can get started on your own Chameleon\
+          \ ready pipeline by adding this\npipeline to your own repository by running:\n\
+          \n```\npopper add popperized/popper-readthedocs-examples/chameleon-benchmarking\n\
+          ```\n\nThis pipeline consists of three stages:\n\n1. A setup stage creates\
+          \ a reservation and allocates the requested resources on\n   chameleon.\
+          \ You may modify this stage and the `scripts/request.py` script to\n   change\
+          \ the amount and type of resources allocated. Once this is done, an\n  \
+          \ ansible inventory is output to the `inventory` directory\n2. The run stage\
+          \ carries out the actual experiment. By default this runs a\n   couple of\
+          \ benchmarks using [Baseliner](https://github.com/ivotron/baseliner)\n3.\
+          \ The teardown stage deletes the lease used to allocate resources, destroying\
+          \ them.\n\n## Running manually\n\nFollow these steps to run this pipeline\
+          \ using your computer as host\n\n1. Make sure docker is installed and running.\
+          \ You can find instructions on\n   installing docker [here](https://docs.docker.com/v17.12/install/).\n\
+          2. Save the ssh key you are using inside the credentials directory under\
+          \ the\n   name popper-key.pem.\n3. Source your Chameleon Openstack config.\
+          \ The [Chameleon\n   docs](https://chameleoncloud.readthedocs.io/en/latest/technical/cli.html#the-openstack-rc-script)\n\
+          \   has a section on this.\n4. Run the pipeline with `popper run`.\n\n#\
+          \ Automated execution\n\nYou can set this pipeline up to run on your prefered\
+          \ continous integration\nservice by using the [popper\ncli](http://popper.readthedocs.io/en/latest/ci/popperci.html).\
+          \ In addition to\nfollowing the instructions in that link, make sure these\
+          \ environment variables\nare set in your continious integration environment.\n\
+          \n- OS_AUTH_URL\n- OS_ENDPOINT_TYPE\n- OS_IDENTITY_API_VERSION\n- OS_REGION_NAME\n\
+          - OS_TENANT_ID\n- OS_TENANT_NAME\n- OS_USERNAME\n- OS_PASSWORD\n\nYou can\
+          \ find most of these inside the Chameleon configuration file downloaded\n\
+          in the previous section.\n\nFor running on CI, you also need to make sure\
+          \ your ssh key is present inside\nthe credential directory upon execution.\
+          \ Make sure **not** to check in your\nprivate ssh keys on git, ever. You\
+          \ can instead use the services provided by\nyour CI service to encrypt sensitive\
+          \ files.\n\n## Travis CI\n\nSpecifically, if you want to run this pipeline\
+          \ on travis, you have to first\nfollow these extra steps\n\n1. Initialize\
+          \ the repository for CI by running `popper ci --service travis`.\n2. Set\
+          \ up the aforementioned environment variables. [The travis\n   docs](https://docs.travis-ci.com/user/environment-variables/)\
+          \ has a section\n   on adding environment variables during runtime on Travis.\
+          \ Make sure you\n   conceal sensitive data, such as passwords.\n3. Add the\
+          \ secret private keyfile as `credentials/popper-key.pem`. [This\n   section](https://docs.travis-ci.com/user/encrypting-files/)\
+          \ of the travis\n   docs shows you how.\n\nOnce you've completed these steps,\
+          \ you can simply push a commit to github to\ntrigger a travis build job.\n\
+          \n"
+        stages: [setup.sh, run.sh, teardown.sh]
+      cloudlab-benchmarking:
+        envs: [host]
+        path: pipelines/cloudlab-benchmarking
+        readme: "# `CloudLab ready` pipeline\n\n\nThe [![`CloudLab \nready`](https://img.shields.io/badge/CloudLab-ready-blue.svg)](https://github.com/popperized/popper-readthedocs-examples/tree/master/pipelines/cloudlab-benchmarking)\n\
+          \ badge is included in a repository hosting a [Popper pipeline](https://github.com/systemslab/popper)\
+          \ that is ready to \n be executed on [CloudLab](https://www.cloudlab.us/).\
+          \ If you see it in a repository, it means that the authors have made it\
+          \ easier for others to run on CloudLab by following the Popper convention.\n\
+          \ \n In this repository, we present an example of a pipeline that can be\
+          \ used \n as the starting point to implement a [![`CloudLab \nready`](https://img.shields.io/badge/CloudLab-ready-blue.svg)](https://github.com/popperized/popper-readthedocs-examples/tree/master/pipelines/cloudlab-benchmarking)\
+          \ pipeline. To add it to your repository using `popper`, you can do:\n\n\
+          ```bash\npopper add popperized/popper-readthedocs-examples/cloudlab-benchmarking\n\
+          ```\n\nIf you add this pipeline to your repo (or if you follow the Popper\
+          \ convention to implement experiments on CloudLab), we invite you to add\
+          \ the badge to your `README` file.\n\n--------------\n\n[CloudLab](https://www.cloudlab.us/)\
+          \ is a flexible, scientific \ninfrastructure for research on the future\
+          \ of cloud computing. It gives \nstudents and researchers access to cloud\
+          \ resources so they can setup \nclusters of machines to execute experiments\
+          \ in many domains such as \nnetworking, computer systems, cloud systems,\
+          \ etc. You can check the \nCloudLab Manual [here](http://docs.cloudlab.us).\n\
+          \nThis pipeline is an example of a [![`CloudLab \nready`](https://img.shields.io/badge/CloudLab-ready-blue.svg)](https://github.com/popperized/popper-readthedocs-examples/tree/master/pipelines/cloudlab-benchmarking)\
+          \ \npipeline, i.e. a pipeline that can be executed on CloudLab with \nminimal\
+          \ effort. The pipeline consists of 3 stages:\n\n  * [`setup`](./setup.sh).\
+          \ This stage automates the allocation of \n    nodes on CloudLab using the\
+          \ \n    [`geni-lib`](https://bitbucket.org/barnstorm/geni-lib) library \n\
+          \    (specifically [this docker \n    image](https://github.com/ivotron/docker-geni-lib)).\
+          \ The stage \n    requests as many nodes as the ones specified in the [request\
+          \ \n    file](./geni/request.py#L24). At the end of this stage, a list of\
+          \ \n    available nodes is written to `geni/machines`.\n  * [`run`](./run.sh).\
+          \ Invokes \n    [Baseliner](https://github.com/ivotron/baseliner) in order\
+          \ to \n    execute the containerized benchmarks specified in \n    [`baseliner/config.yml`](./baseliner/config.yml)\
+          \ on each of the \n    machines from the `geni/machines` file. At the end\
+          \ of the \n    execution, the folder `results/baseliner_output` holds the\
+          \ output \n    of the containers, sorted by benchmark and machine.\n  *\
+          \ [`teardown.sh`](./teardown.sh). Releases all the nodes that were \n  \
+          \  allocated on the `setup` stage.\n\n## Manual execution\n\nTo manually\
+          \ execute this pipeline:\n\n 1) Get the pipeline by executing the following\
+          \ command:\n\n    ```bash\n    popper add popperized/popper-readthedocs-examples/cloudlab-benchmarking\n\
+          \    ```\n\n 2) Obtain credentials ([see \n    here](http://docs.cloudlab.us/geni-lib/intro/creds/cloudlab.html)).\
+          \ \n    This will result in having a *cloudlab.pem* file on your machine.\n\
+          \n 3) Define the following environment variables.\n\n    * `CLOUDLAB_USER`.\
+          \ Your user at CloudLab.\n    * `CLOUDLAB_PASSWORD`. Your password for CloudLab.\n\
+          \    * `CLOUDLAB_PROJECT`. The name of the project your account belongs\
+          \ to on CloudLab.\n    * `CLOUDLAB_PUBKEY_PATH`. The path to your SSH key\
+          \ registered with CloudLab.\n    * `CLOUDLAB_CERT_PATH`. The path to the\
+          \ cloudlab.pem file \n      downloaded in step 2.\n    * `SSHKEY`. The path\
+          \ to your private SSH key registered with CloudLab.\n\n 4) Execute the command:\n\
+          \n    ```bash\n    popper run cloudlab-benchmarking\n    ```\n\n## Automated\
+          \ execution (CI)\n\nTo execute this pipeline on a CI system:\n\n 1) Define\
+          \ the following hidden (secrets) environment variables on \n    your CI\
+          \ system:\n\n      * `CLOUDLAB_USER`. Your username at CloudLab.\n     \
+          \ * `CLOUDLAB_PASSWORD`. Your password for CloudLab.\n      * `CLOUDLAB_PROJECT`.\
+          \ The name of the project your account \n        belongs to on CloudLab.\n\
+          \n 2) Encrypt the following files using your CI system utilities and \n\
+          \    move them to the `geni/` folder:\n\n    * `cloudlab.pem`. File downloaded\
+          \ in the previous stages.\n    * `id_rsa.pub`. Your public ssh key registered\
+          \ with CloudLab.\n    * `id_rsa`. Your private ssh key registered with CloudLab.\n\
+          \n### TravisCI\n\nWe now explain how to configure TravisCI so it automatically\
+          \ validates \nthe pipeline. Before starting, make sure you have done the\
+          \ following:\n\n  * Installed the Travis CI [Command Line \n    Tool](https://github.com/travis-ci/travis.rb#readme)\
+          \ by running:\n\n    ```bash\n    gem install travis\n    ```\n\n  * [Logged\
+          \ in](https://github.com/travis-ci/travis.rb#login) to using \n    the TravisCI\
+          \ CLI tool:\n\n    ```bash\n    travis login\n    ```\n\n  * Define secrets\
+          \ from step 1 from above on \n    [Travis](https://docs.travis-ci.com/user/environment-variables/#Defining-Variables-in-Repository-Settings).\n\
+          \nOnce the above is done, on your machine do the following. Compress the\
+          \ \nfiles from **Step 2** of the previous to a file called \n`cloudlab_credentials.zip`\
+          \ or similar. Then, execute the command:\n\n```bash\ntravis encrypt-file\
+          \ cloudlab_credentials.zip --add\n```\n\nThis will generate a `cloudlab_credentials.zip.enc`\
+          \ file and will add \nto your `.travis.yml` file something like:\n\n```yaml\n\
+          openssl aes-256-cbc -d -K $encrypted_0a6446eb3ae3_key -iv $encrypted_0a6446eb3ae3_iv\
+          \ -in cloudlab_credentials.zip.enc -out cloudlab_credentials.zip\n```\n\n\
+          Please make sure to correct the path of files, for example:\n\n```yaml\n\
+          openssl aes-256-cbc -d -K $encrypted_0a6446eb3ae3_key -iv $encrypted_0a6446eb3ae3_iv\
+          \ -in /route/to/cloudlab_credentials.zip.enc -out pipelines/cloudlab-benchmarking/geni/cloudlab_credentials.zip\n\
+          ```\n\nIt is important to verify that the file `cloudlab_credentials.zip`\
+          \ is \nin `pipelines/cloudlab-benchmarking/geni/` as in the previous example.\
+          \ \nThis is where the pipeline [reads the decrypted files from](pipelines/cloudlab-benchmarking/setup.sh).\n\
+          \nTo unzip it as part of the pipeline, add the following to your travis\
+          \ file.\n\n```yaml\n  - unzip pipelines/cloudlab-benchmarking/geni/cloudlab_credentials.zip\
+          \ -d pipelines/cloudlab-benchmarking/geni/\n```\n\nTo see the final result,\
+          \ you can check the [`.travis.yml` file for \nthis repo](.travis.yml). Lastly,\
+          \ commit all changes to your git \nrepository and push to github so that\
+          \ Travis executes your `CloudLab \nready` pipeline.\n\n> **NOTE**: Make\
+          \ sure to add `cloudlab_credentials.zip.enc` to the git \n> repository and\
+          \ **NOT** the `clouadlab_credentials.zip` file to your \n> git repository,\
+          \ otherwise all your credentials will be available on \n> github to anyone\
+          \ with access to your repo.\n"
+        stages: [setup.sh, run.sh, teardown.sh]
+      data-world:
+        envs: [host]
+        path: pipelines/data-world
+        readme: "# Data World\n\nA template showing how to use Popper with data.world.\
+          \ \nIn this case, Popper helps ensure that datasets are properly referenced\
+          \ and makes sure you have a data.world account.\nYou'll also need to manually\
+          \ create your template csv data on data.world in order to update it.\n\n"
+        stages: [run, update-data-world-repo]
+      datapackage:
+        envs: [host]
+        path: pipelines/datapackage
+        readme: '# Datapackage
+
+
+          A template showing how to use Popper with [datapackages](https://frictionlessdata.io/data-packages/).
+
+          In this example, Popper makes sure all the requirements
+
+          are fulfilled in order to use datapackage.
+
+          '
+        stages: [run.sh, update-datapackage.sh]
+      docker-data-science:
+        envs: [host]
+        path: pipelines/docker-data-science
+        readme: '# docker-data-science
+
+          Example of how to use a docker container to run an experiment in an isolated
+
+          environment. Popperizes [this](http://scikit-learn.org/stable/auto_examples/model_selection/plot_learning_curve.html)
+          example from the scikit-learn docs.
+
+          '
+        stages: [setup, analyze, generate-figures]
+      envvar-param:
+        envs: [host]
+        path: pipelines/envvar-param
+        readme: '# Parametrized pipelines
+
+
+          This simple pipeline shows how one might parametrize a pipeline using
+
+          environment variables. The pipeline will fail if the N_REPETITIONS
+
+          envvar isn''t set. So in this case, `popper run envvar-param` will fail,
+
+          where `N_REPETITIONS=10 popper run envvar-param` will not.
+
+
+          '
+        stages: [run]
+      gce-benchmarking:
+        envs: [host]
+        path: pipelines/gce-benchmarking
+        readme: "# Google Compute Engine ready pipeline example\n\n[![Google Cloud\
+          \ Engine ready pipeline](https://img.shields.io/badge/GCE-ready-blue.svg)](https://github.com/popperized/popper-readthedocs-examples/tree/master/pipelines/gce-benchmarking)\n\
+          \n\n[Google Compute Engine (GCE)](https://cloud.google.com/compute/) is\
+          \ a service\noffered by Google to facilitate the deployment of cloud infrastructure.\
+          \ It\nprovides a well tested and easy way to allocate resources on Google's\
+          \ global\ninfrastructure, and gives anyone the ability to painlessly create,\
+          \ run, and\ndestroy virtual machines at will.\n\nThis directory contains\
+          \ a pipeline that makes use of GCE to run a simple\nexperiment. We use [Terraform](https://www.terraform.io/)\
+          \ to programatically\ncreate and destroy the compute instances needed for\
+          \ the experiment.\n\nThe pipeline consists of three stages:\n\n- `setup.sh`\
+          \ initializes Terraform and applies the changes needed to create the\n \
+          \ infrastructure we need. To avoid requiring terraform to be installed,\
+          \ we\n  instead use a the official Terraform docker image provided by Hashicorp.\
+          \ Once\n  the machines are ready, a list of them is written to `baseliner/hosts`.\n\
+          - `run.sh` runs [Baseliner](https://github.com/ivotron/baseliner) on the\n\
+          \  provisioned machines and saves results to a `results` directory.\n- `teardown.sh`\
+          \ once again uses Terraform, this time to free the resources we\n  created\
+          \ in out setup stage.\n\n## Local execution\n\nTo run this pipeline locally:\n\
+          1. Add the pipeline to your current repository with this command:\n   ```\n\
+          \    popper add github/popper-readthedocs-examples/gce-benchmarking\n  \
+          \ ```\n1. Place your Google Cloud service account credentials json file\
+          \ inside the\n   `credentials` directory of the pipeline as `account.json`.\
+          \ If you don't have\n   a service account, you can find more information\
+          \ on obtaining one\n   [here](https://cloud.google.com/iam/docs/creating-managing-service-account-keys).\n\
+          2. If required, you may set the `GCE_MACHINE_TYPE` environment variable\
+          \ to\n   change the size of the instance running the experiment. The default\
+          \ value is\n   `g1-small`.\n3. Execute the pipeline: `popper run gce-benchmarking`.\n\
+          \n## Automatic execution in continious integration evnironments\n\nSetting\
+          \ this pipeline to run on top of a continious integration service is similar\
+          \ to the standard procedure for most popper pipelines, described [here](http://popper.readthedocs.io/en/latest/ci/popperci.html).\
+          \ The only added complication is the need to have the `credentials/account.json`\
+          \ file present during runtime. You should _not_ ever commit bare account\
+          \ credentials to a public repository of any kind. Instead you should take\
+          \ advantage of features offered by various popular CI services to commit\
+          \ an encrypted version of your credentials file in the repository instead.\
+          \ A few examples:\n\n- The Travis CI documentation has a section on [encrypting\n\
+          files](https://docs.travis-ci.com/user/encrypting-files/<Paste>)\n- Circle\
+          \ CI has a recommended way of [keeping sensitive files encrypted in your\n\
+          repository](https://github.com/circleci/encrypted-files)\n\n\n\n"
+        stages: [setup.sh, run.sh, teardown.sh]
+      genomics:
+        envs: [host]
+        path: pipelines/genomics
+        readme: "# genomics\n\nPopper pipeline that guides you through [this](https://jasonjwilliamsny.github.io/wrangling-genomics/01-automating_a_workflow.html)\
+          \ tutorial.\n\nIn this case Popper makes sure that the required files \n\
+          and the required tools are downloaded, then it executes \nall the indicated\
+          \ steps in the tutorial and copies the \noutput files to an output folder\
+          \ in your local machine.\n\nThe pipeline consists of 5 stages: \n\n  * [`setup`](./setup.sh):\
+          \ \n    This stage builds a docker container \n    using the `docker` folder,\
+          \ which includes:\n     \n    * a folder `files` containing\n    the file\
+          \ `SRR097977_final_variant_output_mac.vcf` of a previous run\n    executed\
+          \ using Mac. This file is here to analyze and compare results between\n\
+          \    different operating systems. \n    * A bash script for each stage of\
+          \ the main execution.\n    * A Dockerfile with the minimum requirements\
+          \ needed to execute\n    this pipeline.\n    \n    After that this stage\
+          \ executes the bash script [`docker-setup.sh`](./docker/docker-setup.sh)\n\
+          \    using the previous docker container. This stage creates the following\
+          \ \n    folder structure :\n    \n        \u2500 Data\n            \u251C\
+          \u2500\u2500 ref_genome\n            \u251C\u2500\u2500 untrimmed_fastq\n\
+          \            \u2514\u2500\u2500 trimmed_fastq\n        \u2500 Results\n\
+          \            \u251C\u2500\u2500 sai\n            \u251C\u2500\u2500 sam\n\
+          \            \u251C\u2500\u2500 bam\n            \u251C\u2500\u2500 bcf\n\
+          \            \u2514\u2500\u2500 vcf\n        \u2500 docs\n            \n\
+          \    Then it downloads the required files: \n    * data/ref_genome/[ecoli_rel606.fasta](https://osf.io/vua9t)\n\
+          \    * data/trimmed_fastq/[SRR097977.fastq_trim.fastq](https://osf.io/w7gp2)\n\
+          \    \n    And it downloads and installs the following required tools: \n\
+          \    * [samtools](https://github.com/samtools/samtools) release 1.8\n  \
+          \  * [bcftools](https://github.com/samtools/bcftools) release 1.8\n    *\
+          \ [snpEff](http://sourceforge.net/projects/snpeff) latest core\n    * [bio-bwa](https://sourceforge.net/projects/bio-bwa)\
+          \ latest\n\n    \n  * [`run`](./run.sh). \n    Executes the bash script\
+          \ [`docker-run.sh`](./docker/docker-run.sh).\n    \n    This stage is responsible\
+          \ of executing the steps shown in [this](https://jasonjwilliamsny.github.io/wrangling-genomics/01-automating_a_workflow.html)\
+          \ tutorial  \n  \n  * [`post-run.sh`](./post-run.sh). \n    This stage executes\
+          \ the bash script [`docker-post-run.sh`](./docker/docker-post-run.sh)\n\
+          \    \n    This stage creates the folder `results/visualize` and copies\
+          \ the files\n     created in the previous step\n    `results/bam/SRR097977.aligned.sorted.bam`,\
+          \ `results/bam/SRR097977.aligned.sorted.bam.bai`,\n    `data/ref_genome/ecoli_rel606.fasta`,\
+          \ `results/vcf/SRR097977_final_variants.vcf`\n    to this folder. So you\
+          \ can visualize them using\n    [GVI](http://software.broadinstitute.org/software/igv/home)\n\
+          \    \n  * [`concordance.sh`](./concordance.sh). \n  \n    This stage also\
+          \ executes a bash script using docker [`docker-concordance.sh`](./docker/docker-concordance.sh)\n\
+          \    which uses `SnpSift` to calculate the concordance between `results/vcf/SRR097977_final_variants.vcf`\n\
+          \    and the file `files/SRR097977_final_variant_output_mac.vcf`\n    Then\
+          \ it writes the results of this concordance to `concordance_SRR097977_final_variant_output_mac_SRR097977_final_variants.summary.txt`\n\
+          \  * [`validate.sh`](./validate.sh). \n    This stage executes the bash\
+          \ script [`docker-validate.sh`](./docker/docker-validate.sh) which\n   \
+          \ which determines if the VCF files match or if they don't using the file\
+          \ created in the previous stage `concordance_SRR097977_final_variant_output_mac_SRR097977_final_variants.summary.txt`.\n\
+          \    returning `[true] SnpSift Concordance output. The vcf files match.`\
+          \ or `[false] SnpSift Concordance output. The vcf files don't match`.\n\
+          \       \n  * [`teardown.sh`](./teardown.sh) \n    This stage copies all\
+          \ the content of the folder `results` to an output folder in your local\
+          \ machine.\n    Here, you can find all the used files, the `visualize` folder\
+          \ and the concordance between the VCF files.\n    Then it stops and deletes\
+          \ the docker container created in the first stage.\n    \n"
+        stages: [setup.sh, run.sh, post-run.sh, concordance.sh, validate.sh, teardown.sh]
+      perihelion-mercury:
+        envs: [host]
+        path: pipelines/perihelion-mercury
+        readme: "# perihelion-mercury\n\nPopper pipeline that emulates the perihelion\
+          \ motion of Mercury caused by General Relativity.\nThis pipeline was `poperized`\
+          \ from here: \n\n`\nhttps://github.com/ckoerber/perihelion-mercury\n`\n\n\
+          In this case, popper makes use of virtualenv to install all the required\
+          \ dependencies and\nexecutes the scripts [`base_solution.py`](./py-scripts/base_solution.py)\
+          \ and \n[`perihelion.py`](./py-scripts/perihelion.py) automatically. \n\n"
+        requirements: {}
+        stages: [setup, run]
+        vars: []
+      pgbench:
+        envs: [host]
+        path: pipelines/pgbench
+        readme: '# pgbench
+
+
+          This pipeline runs pgbench on different versions of postgresql and generates
+          figures comparing their transactions per second.
+
+          '
+        stages: [setup, run, cleanup, analyze]
+      sea-surface-mapping-r:
+        envs: [host]
+        path: pipelines/sea-surface-mapping-r
+        readme: '# sea-surface-mapping-r
+
+
+
+          A pipeline showing how to make use of R''s packrat package to create a portablie
+          pipeline. The pipeline is a port of this other pipeline implemented in [Python](https://github.com/popperized/swc-lesson-pipelines/tree/master/pipelines/sea-surface-mapping).
+          The R scripts create weather maps using rgeos, sf, maptools, and netcdf.
+          In this case, the pipeline makes use of packrat to install dependencies
+          in isolation.
+
+          '
+        stages: [setup.sh, run.sh]
+      vagrant-linux:
+        envs: [host]
+        path: pipelines/vagrant-linux
+        readme: "# linux-cgroups\n\nThis experiment exemplifies the usage of Popper\
+          \ for managing changes \nand automating experiments that modify the Linux\
+          \ Kernel.\n"
+        stages: [init, build-kernel, deploy-kernel, run, visualize]
+      validator:
+        envs: [host]
+        path: pipelines/validator
+        readme: '# validator
+
+          A template showing how to use Popper with validations.
+
+          In this case, [Popper](https://github.com/systemslab/popper/) helps ensure
+          that validations are enable by returning **GOLD** as the status of a pipeline
+          after executing popper run.
+
+
+          Popper implements the convention of treating every line written to stdout
+          by the **validate.sh** as a validation result.
+
+
+          This script should print to standard output one line per validation, denoting
+          whether a validation passed or not. In general, the form for validation
+          results is [true|false] <statement> (see examples below).
+
+
+          > [true]  algorithm A outperforms B
+
+
+          > [false] network throughput is 2x the IO bandwidth
+
+
+          '
+        stages: [virtual-environment-checker.sh, generate-data.sh, validate.sh]
+    popperized: [github/popperized]
+    version: 1
+  swc-lesson-pipelines:
+    metadata: {}
+    pipelines:
+      co2-emissions:
+        envs: [host]
+        path: pipelines/co2-emissions
+        readme: '# co2-emissions
+
+          '
+        stages: [setup, run, validate]
+      data-science-no-stages:
+        envs: [host]
+        path: pipelines/data-science-no-stages
+        readme: "# data-science-no-stages\n\nAn example of a pipeline without stages.\n\
+          \nThis stage is used in the [Popper SWC Lesson]() to illustrate how stages\
+          \ can be \nadded, modified and deleted for an existing pipeline. Also, the\
+          \ lesson uses this \npipeline to exemplify some of the problems with dependency\
+          \ management, since \nsome of the packages required in for the pipeline\
+          \ to execute might not be \navailable in the machine where this pipeline\
+          \ is being executed.\n"
+        stages: []
+      docker-data-science:
+        envs: [host]
+        path: pipelines/docker-data-science
+        readme: "# Portable Data Science Pipeline With Docker\n\nIn recent years,\
+          \ [Docker](https://www.docker.com/) has emerged in the \nDevOps world as\
+          \ a powerful tool for building versatile reusable \nenvironments for development\
+          \ and deployment of complex software \nstacks. Docker can be leveraged to\
+          \ run experimentation pipelines in \nisolated and easily recreated environments.\
+          \ In this example we will go \nover a pipeline for a simple data science\
+          \ analysis whose only \nrequirement on the host machine is having `docker`\
+          \ installed. \nInstructions on installing Docker can be found at the [official\
+          \ \nwebsite](https://docs.docker.com/install/).\n\nThe directory structure\
+          \ for this pipeline is as follows:\n\n```\ndocker-data-science\n\u251C\u2500\
+          \u2500 README.md\n\u251C\u2500\u2500 build-docker-image.sh\n\u251C\u2500\
+          \u2500 generate-figures.sh\n\u251C\u2500\u2500 generate-learning-curves.sh\n\
+          \u251C\u2500\u2500 validate.sh\n\u251C\u2500\u2500 docker\n\u2502\_\_ \u251C\
+          \u2500\u2500 Dockerfile\n\u2502\_\_ \u2514\u2500\u2500 requirements.txt\n\
+          \u251C\u2500\u2500 results\n\u2502\_\_ \u251C\u2500\u2500 naive_bayes_original.png\n\
+          \u2502\_\_ \u2514\u2500\u2500 svm_estimator_original.png\n\u2514\u2500\u2500\
+          \ scripts\n    \u251C\u2500\u2500 compare-output.py\n    \u251C\u2500\u2500\
+          \ generate-figures.py\n    \u2514\u2500\u2500 generate-learning-curves.py\n\
+          ```\n\nThere are four stages as well as a directory for the docker image\
+          \ \ndefinition (`docker/`), past results used to validate re-executions\
+          \ \n(`results/`), and a `scripts/` that include the three python scripts\
+          \ \nfor this pipeline. The stages accomplish the following:\n\n  * `build-docker-image`.\
+          \ Builds the docker image, installing and \n    setting up the dependencies\
+          \ specified in the `requirements.txt` \n    file.\n  * `generate-learning-curves`.\
+          \ Loads the [Diabetes \n    Dataset](https://archive.ics.uci.edu/ml/datasets/diabetes)\
+          \ and \n    runs two prediction models using distinct methods. At the end,\
+          \ \n    produces CSV files with the learning curve for each method.\n  *\
+          \ `generate-figures`. Plots the learning curve for each method.\n  * `validate`.\
+          \ Compares the figures for testing bitwise \n    reproducibility.\n\nUsing\
+          \ this compartmentalized splitting of stages and keeping \ndependencies\
+          \ inside docker images allow others to easily re-execute \nexperimentation\
+          \ pipelines.\n"
+        stages: [build-docker-image, generate-learning-curves, generate-figures, validate]
+      sea-surface-mapping:
+        envs: [host]
+        path: pipelines/sea-surface-mapping
+        readme: '# sea-surface-mapping
+
+
+          A pipeline showing how to create [weather maps in Python](https://moderndata.plot.ly/weather-maps-in-python-with-mapbox-gl-xarray-and-netcdf4/)
+          using tools like mapbox-gl, xarray and netCDF4. In this case, the pipeline
+          makes use of `virtualenv`, ensuring that an environment is active and running
+          at the time of execution.
+
+          '
+        stages: [setup.sh, run.sh]
+    version: 1
