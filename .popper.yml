@@ -1,8 +1,17 @@
 badge-server-url: http://badges.falsifiable.us
 metadata:
+  abstract: "Popper is a convention and CLI tool for conducting experiments and writing\
+    \ academic articles following best OSS and DevOps practices. The open-source CLI\
+    \ tool helps researchers organize all the artifacts associated to a scientific\
+    \ exploration inside a code repository such as Git. These popperized\
+    \ repositories are self-contained and can be easily shared (cloned via Git) so\
+    \ that others can replicate the original results (see examples here)."
   access_right: open
+  author1: Karen C. Tsai, ktsai.lanl@gmail.com, Los Alamos National Laboratory
+  keywords: Popper, GIT, Travis-CI, Docker, Zenodo
   license: CC-BY-4.0
   publication_type: article
+  title: Popper Tutorials
   upload_type: publication
 pipelines:
   co2-emissions:
